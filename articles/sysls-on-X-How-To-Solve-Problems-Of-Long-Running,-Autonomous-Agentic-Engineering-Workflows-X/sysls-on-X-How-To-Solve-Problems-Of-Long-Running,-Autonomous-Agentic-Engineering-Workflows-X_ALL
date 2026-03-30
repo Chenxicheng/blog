@@ -1,0 +1,652 @@
+# If you want to design a harness for really long-running autonomous systems, you should understand the following deeply. / 如何设计长时间运行自主系统的框架
+
+At its core, all harness design is to overcome the problems of agents either becoming lazy and cutting corners or being confused and stupid.
+从本质上讲，所有的harness设计都是为了克服agents变得懒惰、偷工减料，或者变得困惑和愚笨的问题。
+
+, but a well written harness can go a long way.
+但是一个编写良好的harness可以发挥很大作用。
+
+Not gaining sufficient context before starting a task and therefore acting on wrong or missing information before it has begun. To overcome this, you need to systematically check for incomplete and/or contradictory information before starting on the task — because this will propagate once it starts.
+在开始任务前没有获得足够的上下文，因此会基于错误或缺失的信息行动——此时任务尚未开始。为了克服这一点，你需要系统地检查不完整和/或矛盾的信息后再开始任务——因为这会在任务开始后传播。
+
+This is the part where the agent is deciding on the attack vectors to solve the problem. The biggest problem here is choosing the wrong attack vectors, which results in implementing something entirely wrong.
+这是智能体决定使用哪些 attack vectors 来解决问题的部分。这里最大的问题是选择了错误的 attack vectors，这导致实现了完全错误的东西。
+
+Choosing a wrong attack vector because of stupidity rarely happens anymore, but choosing a wrong attack vector because of misalignment — misinterpreting what the user wants — is still pretty common.
+由于愚蠢而选择错误的 attack vector 现在很少发生了，但由于 misalignment —— 错误理解用户的需求 —— 而选择错误的 attack vector 仍然很常见。
+
+To overcome this, you need to make sure that your agent is covering all related files before it has even started planning. An important part of this is ensuring that your repository contains no contradictory information.
+要克服这个问题，你需要确保你的 agent 在开始规划之前就已经覆盖了所有相关文件。其中一个重要部分是确保你的 repository 不包含任何矛盾信息。
+
+Your agents don't live with the consequences of short-term, quick fix solutions. This is like hiring cheap software engineering labor, you may get something that works but it's going to result in a lot of tech debt.
+你的 agents 不会承担短期快速解决方案的后果。这就像雇佣廉价的 software engineering 人员，你可能得到了能用的东西，但最终会产生大量的 tech debt。
+
+The way to resolve this is to remind your agents at the "planning phase" to implement solutions that scale, that fit into the bigger picture, is easy to maintain, and respect good software engineering paradigms. Basically, you want your agents to think like a founder, not a part-time engineer.
+解决这个问题的办法是在"planning phase"提醒你的agents实现可扩展的解决方案，要符合更大的蓝图，易于维护，并且遵循良好的软件工程范式。基本上，你希望你的agents像创始人一样思考，而不是像兼职工程师一样思考。
+
+You can get your agents to come up with N (e.g. N=5) different plans, have another agent pick the plan that will result in an implementation that is easier to maintain and scores higher on "clean-code principles".
+你可以让你的 agents 生成 N（例如 N=5）个不同的计划，然后让另一个 agent 选择能够产生更易维护的实现、并在 "clean-code principles" 上得分更高的计划。
+
+This is the part where the agent is actually working on the problem. The biggest problem here is context exhaustion, by miles. Given a good plan and the right context, virtually all frontier model agents are able to complete sufficiently small tasks with close to one-shot capability now. Problems only arise when dealing with complex, multi-session problems that consume millions of tokens.
+这是 agent 实际处理问题的部分。这里最大的问题是 context exhaustion，远远超过其他问题。只要有好的 plan 和合适的 context，现在几乎所有 frontier model agents 都能以接近 one-shot 的能力完成足够小的任务。只有在处理消耗数百万 tokens 的复杂 multi-session 问题时才会出现问题。
+
+As I've written before, virtually all agents have some kind of context anxiety, and as a function of time, they become more and more desperate to end the session. This is extremely pervasive with Claude. To overcome this, you need to do smart session handoffs where you can relieve your agents of their context. You will then face a new problem — how to maximize context fidelity in your session handoffs.
+正如我之前写过的，几乎所有 agents 都存在某种形式的 context anxiety，随着时间推移，它们变得越来越急于结束 session。这在 Claude 中极为普遍。要克服这个问题，你需要进行 smart session handoffs，让你的 agents 摆脱 context 的束缚。然后你会面临一个新问题——如何在 session handoffs 中最大化 context fidelity。
+
+You want to make sure that your handoff prompt contains sufficient detail so that the new agent in a new session can pick up everything it needs to continue the task in an information-dense way. Understand that what you are doing here is essentially a form of compaction — and the reason to believe you can do it better than native providers is that you have a better understanding of your repository structure than the foundation model providers do.
+您需要确保您的 handoff prompt 包含足够的细节，以便新 session 中的新 agent 能够以信息密集的方式获取继续任务所需的一切内容。请理解，您在这里所做的本质上是一种 compaction——而相信您能做得比 native providers 更好的原因是，您对 repository structure 的理解比 foundation model 提供商更深入。
+
+Other than context bloat, the second biggest problem is what I call planning stickiness. It is the risk where your agent deviates from the plan and essentially does whatever it wants. The most common expression of this is: you say do A, which is lengthy, painful, and sophisticated. Your agent does A', which it reasons is a reasonably close approximation to A, but which will not get you remotely close to your destination.
+除了上下文膨胀之外，第二大问题是我所说的“规划粘性”。这是你的智能体偏离计划、基本上为所欲为的风险。最常见的表现形式是：你说做A，这很耗时、痛苦且复杂。你的智能体做A'，它认为这是对A的合理近似，但实际上根本无法让你接近目标。
+
+This is not only problematic as an outcome, but it is especially problematic when you realize that all software being composable often means that every downstream piece of code depending on A is now wired for A' instead — which means everything built from A' onwards is effectively wrong.
+这不仅在结果上是有问题的，而且当你意识到所有 software 都是可组合的通常意味着每个 downstream 依赖 A 的代码 piece 现在都被 wired for A' 了——这意味着从 A' onwards 构建的所有内容实际上都是错误的。
+
+To solve this, you need to verify early and often that the solution to a task is implemented well and in accordance with your expectations. This will prevent cascading failures in your task list.
+要解决这个问题，你需要尽早并经常验证任务解决方案是否实现良好并符合你的期望。这将防止任务列表中的级联失败（cascading failures）。
+
+Agents have a deep fear of complexity. If you ask them to implement a 5-line function, no problem. If you make them believe they are going to have to write a 50,000-line class, they start to weasel their way out of it.
+代理人对复杂性有着深深的恐惧。如果你让他们实现一个5行函数，没问题。如果你让他们相信他们将不得不写一个50,000行的类，他们就会开始想办法逃避。
+
+The worst offenses here are either writing stubs and calling it a day, or worse, declaring it out of scope for the session and ending it.
+这里最糟糕的做法要么是写 stubs 然后就收工，或者更糟糕的是，声明它 out of scope 然后结束 session。
+
+My best guess is that somewhere in the RL process, agents have learned that when working on highly complex tasks, they tend to get a lot of things wrong, are heavily penalized for it, and therefore aggressively avoid it.
+我的最佳猜测是，在 RL 过程的某个环节中，agents 已经学会当处理高度复杂的任务时，它们往往会犯很多错误，并且会因此受到严厉的惩罚，因此会积极地回避这些任务。
+
+Ironically, humans have this problem too. Most people imagine the gargantuan amount of work a project requires and procrastinate on it forever. Productivity coaches will tell you that the way to overcome this is to start with the simplest version of the task — the very first step. In this way the activation energy is nearly zero, and you immediately shift from "getting started" to "in progress."
+讽刺的是，人类也有这个问题。大多数人想象一个项目需要的大量工作，然后永远拖延下去。生产力教练会告诉你，克服这个问题的方法是从任务的最简单版本开始——也就是第一步。这样一来，activation energy 几乎为零，你立即从"开始"转变为"进行中"。
+
+It is similar for agents. You need to break a complex problem into many different sub-tasks that do not seem as daunting — where every task is a sub-hundred-line task, and you string 500 of them together.
+对于 Agent 也是如此。你需要将一个复杂问题分解成许多不同的子任务，这些子任务看起来不那么令人畏惧——每个任务都是不超过一百行的任务，然后将 500 个这样的任务串联在一起。
+
+An interesting side effect of having studied productivity methods and being a practitioner of them is realizing how effective they are at managing agents as well. It is very clear to me that agent psychology is created in our image.
+学习 productivity 方法并实践它们的一个有趣的副作用是，意识到这些方法在管理 agent 方面也同样有效。我非常清楚，agent psychology 是按照我们的形象创造的。
+
+Agents take the shortest path to verification. They will write weak tests, watch them pass, and use that as reason to declare success.
+代理（Agents）采取最短路径进行验证（verification）。他们会编写弱测试（weak tests），看着测试通过（pass），然后用这个作为理由宣布成功（success）。
+
+The more context pressure there is to "verify" work, the more atrocious this becomes. At its worst, suppose you have a function that does behavior A. The agent will write a test for behavior A', watch it pass, and declare that the function works.
+上下文压力越大，"验证"工作的结果就越糟糕。最坏的情况下，假设你有一个执行 behavior A 的 function。智能体会为 behavior A' 写一个 test，看着它 pass，然后宣称这个 function 工作正常。
+
+The way to mitigate this is to ensure that the agent writing the verification tests is operating with as fresh a context as possible, and is a dedicated agent planning out the verification. It is then important that you are verifying the exact production-ready behavior you are looking for.
+缓解此问题的方法是确保编写验证测试的 agent 使用尽可能新鲜的上下文，并且是一个专门负责规划验证的 agent。随后，重要的是确保你正在验证的正是你所期望的 production-ready 行为。
+
+That means if you are testing whether a button on your front end works, do not test whether a generic button works. Think about what it would actually take to know the button works:
+这意味着如果你在测试前端的一个 button 是否工作，不要测试一个通用的 button 是否工作。思考一下实际上要了解这个 button 是否工作需要什么：
+
+*   You need to see a screenshot confirming the button is actually there.
+*   你需要看到screenshot，确认button确实在那里。
+
+*   You need to actually simulate clicking the button.
+*   你需要实际模拟点击 button。
+
+*   The button needs to trigger something in your backend to deliver whatever payload it is supposed to deliver.
+这个按钮需要在你的 backend 中触发某些操作，以传递它应该传递的 payload。
+
+Until you can verify that something actually works — it doesn't. Trust me, I've worked with agents long enough to say this with confidence.
+在你能够验证某件事确实有效之前——它就是无效的。相信我，我和 agents 合作的时间足够长，可以自信地这么说。
+
+As it stands today, agents write barely acceptable code and do nothing to reduce the entropy in your repository. What happens is that they change function X to have behavior B instead of behavior A, but all documentation still references behavior A. Your agent is not going to fix that for you.
+就目前而言，agents 写出的代码勉强及格，完全不会减少你代码库中的熵。实际情况是，他们把 function X 从 behavior A 改成了 behavior B，但所有文档仍然引用的是 behavior A。你的 agent 不会帮你修复这个问题。
+
+Repeat this 100 times and you end up with an unmaintainable repository where your agent is constantly confused and making poor decisions.
+重复 100 次，你就会得到一个难以维护的 repository，其中你的 agent 不断感到困惑并做出错误的决策。
+
+The best way to overcome this is to allocate tokens for an agent with a fresh context, after every long-running session, to clean up state, resolve contradictions, handle merge conflicts, remove dead code and stale documentation, and so on.
+克服这个问题的最佳方式是在每次长时间运行的会话之后，为一个具有全新上下文的 agent 分配 token，以清理状态、解决矛盾、处理 merge conflicts、移除 dead code 和过时的文档，等等。
+
+The tools available to solve the above problems within native harnesses — Claude Code, Codex, etc. — are very limited. Codex, for example, does not even have hooks.
+在原生测试框架中解决上述问题的工具——如 Claude Code、Codex 等——非常有限。例如，Codex 甚至没有钩子（hooks）。
+
+More importantly, when you get Claude to act as the orchestrator in your harness, it becomes extremely bloated with orchestration context that is irrelevant to the actual task list at hand. You actually want your agent orchestration layer to exist on top of your task lists.
+更重要的是，当你在 harness 中让 Claude 担任 orchestrator 的角色时，它会变得极其臃肿，充满了大量与当前实际 task list 无关的 orchestration context。你真正需要的是让你的 agent orchestration layer 存在于你的 task lists 之上。
+
+For example, you can have an agent whose sole job is ensuring that every session comes with an algorithmic contract that must be fulfilled before the session can end. This agent monitors the state of the contract, nudges agents toward contract stickiness, and spawns independent agents with fresh context to judge the quality of the work done and independently verify the "doneness" of the task.
+例如，你可以有一个 Agent，其唯一职责是确保每个 session 都配有一个 algorithmic contract，必须在 session 结束前履行该 contract。该 Agent 监控 contract 的状态，促使其他 Agent 保持 contract 的粘性，并生成具有 fresh context 的独立 Agent 来评判工作质量，独立验证任务的完成度（doneness）。
+
+By having your own independent harness, you have the ability to create custom workflows that directly address all the ways agents can be stupid.
+拥有自己独立的测试框架，您就可以创建自定义工作流，直接应对智能体可能表现出的各种愚蠢行为。
+
+Finding that your agents have a lot of complexity fear because of the nature of your work? Create an agent to classify whether the current prompt will result in a simple or high-complexity project. If high complexity, spawn another agent that breaks the project into as many bite-sized tasks as possible until the end outcome matches the original prompt.
+# Multi-Agent Complexity Router System
+
+```python
+"""
+Multi-Agent Complexity Router System
+Classifies prompts and decomposes complex tasks into manageable units.
+"""
+
+import json
+import re
+from enum import Enum
+from dataclasses import dataclass, field
+from typing import Callable, Optional
+from abc import ABC, abstractmethod
+
+
+class ComplexityLevel(Enum):
+    """Project complexity classification levels."""
+    SIMPLE = "simple"
+    MODERATE = "moderate"
+    HIGH = "high"
+    EXTREME = "extreme"
+
+
+@dataclass
+class Task:
+    """Represents a single decomposable task unit."""
+    id: str
+    title: str
+    description: str
+    dependencies: list[str] = field(default_factory=list)
+    estimated_subtasks: int = 1
+    complexity_factors: list[str] = field(default_factory=list)
+    
+    def to_dict(self) -> dict:
+        return {
+            "id": self.id,
+            "title": self.title,
+            "description": self.description,
+            "dependencies": self.dependencies,
+            "estimated_subtasks": self.estimated_subtasks,
+            "complexity_factors": self.complexity_factors
+        }
+
+
+@dataclass
+class ComplexityAnalysis:
+    """Results from complexity classification."""
+    level: ComplexityLevel
+    confidence: float
+    complexity_score: float
+    factors: list[str]
+    recommendations: list[str]
+    
+    def to_dict(self) -> dict:
+        return {
+            "level": self.level.value,
+            "confidence": self.confidence,
+            "complexity_score": self.complexity_score,
+            "factors": self.factors,
+            "recommendations": self.recommendations
+        }
+
+
+# ============================================================================
+# COMPLEXITY CLASSIFIER AGENT
+# ============================================================================
+
+class ComplexityClassifierAgent:
+    """
+    Agent that analyzes prompts and determines project complexity.
+    
+    Evaluates multiple dimensions:
+    - Scope breadth (how many domains/systems involved)
+    - Technical depth (required expertise levels)
+    - Integration complexity (external dependencies)
+    - Uncertainty factors (ambiguous requirements)
+    """
+    
+    # Complexity indicators with weights
+    HIGH_COMPLEXITY_INDICATORS = {
+        # Scope factors (weight: 2.0)
+        "multiple": 1.5,
+        "various": 1.2,
+        "several": 1.0,
+        "different": 1.0,
+        "all": 1.5,
+        "entire": 1.3,
+        
+        # Technical depth signals (weight: 2.5)
+        "system": 1.5,
+        "architecture": 2.0,
+        "framework": 1.5,
+        "infrastructure": 2.0,
+        "microservices": 2.5,
+        "distributed": 2.0,
+        "scalable": 1.8,
+        "enterprise": 2.0,
+        
+        # Integration signals (weight: 2.0)
+        "integrate": 1.8,
+        "connect": 1.5,
+        "api": 1.5,
+        "third-party": 1.8,
+        "external": 1.5,
+        "database": 1.3,
+        "authentication": 1.5,
+        
+        # Workflow complexity (weight: 1.5)
+        "workflow": 1.5,
+        "pipeline": 1.5,
+        "automation": 1.3,
+        "ci/cd": 2.0,
+        "deployment": 1.5,
+        
+        # Ambiguity signals (weight: 1.0)
+        "optimize": 1.2,
+        "improve": 1.0,
+        "refactor": 1.3,
+        "modernize": 1.5,
+    }
+    
+    SIMPLE_INDICATORS = {
+        # Clear, bounded tasks
+        "create": 0.5,
+        "build": 0.5,
+        "make": 0.4,
+        "simple": 0.3,
+        "basic": 0.3,
+        "single": 0.4,
+        "one": 0.3,
+        "just": 0.2,
+        "only": 0.2,
+        "easy": 0.2,
+        "straightforward": 0.2,
+    }
+    
+    # Phrases that indicate complexity
+    COMPLEX_PATTERNS = [
+        r'\b(if|when|unless)\s+\w+\s+(then|do|execute)',
+        r'\band\s+then\b',
+        r'\beither\s+(or|one)\b',
+        r'\bshould\s+(also|must|need|handle)\b',
+        r'\bas\s+well\s+as\b',
+        r'\bin\s+addition\s+to\b',
+        r'\bregardless\s+of\b',
+        r'\bbased\s+on\s+\w+\s+(decide|choose|select)\b',
+        r'\bloop\s+(through|over|each)',
+        r'\biterate\s+(over|through)',
+        r'\bconcurrently\b',
+        r'\basynchronously\b',
+        r'\bparallel(?:ly)?\b',
+        r'\bsequential(?:ly)?\b',
+        r'\bif\s+this\s+then\s+that\b',
+    ]
+    
+    def __init__(self, llm_provider: Optional[Callable] = None):
+        """
+        Initialize classifier with optional LLM for advanced analysis.
+        
+        Args:
+            llm_provider: Optional LLM function for semantic analysis
+        """
+        self.llm_provider = llm_provider
+        self._pattern_cache = [
+            re.compile(p, re.IGNORECASE) for p in self.COMPLEX_PATTERNS
+        ]
+    
+    def classify(self, prompt: str) -> ComplexityAnalysis:
+        """
+        Classify the complexity of a given prompt.
+        
+        Args:
+            prompt: The user's request/project description
+            
+        Returns:
+            ComplexityAnalysis with level, score, and contributing factors
+        """
+        prompt_lower = prompt.lower()
+        
+        # Calculate weighted scores
+        complexity_score = self._calculate_complexity_score(prompt_lower)
+        simplicity_score = self._calculate_simplicity_score(prompt_lower)
+        
+        # Check for complex patterns
+        pattern_matches = self._detect_complex_patterns(prompt_lower)
+        complexity_score += pattern_matches * 0.5
+        
+        # Detect scope indicators
+        scope_analysis = self._analyze_scope(prompt)
+        
+        # Combine scores (normalize to 0-10)
+        final_score = (complexity_score * 2) - (simplicity_score * 1.5)
+        final_score = max(0, min(10, final_score + scope_analysis['scope_penalty']))
+        
+        # Determine level
+        level = self._score_to_level(final_score)
+        confidence = self._calculate_confidence(final_score, pattern_matches)
+        
+        # Generate factors and recommendations
+        factors = self._extract_complexity_factors(prompt_lower)
+        recommendations = self._generate_recommendations(level, factors)
+        
+        return ComplexityAnalysis(
+            level=level,
+            confidence=confidence,
+            complexity_score=final_score,
+            factors=factors,
+            recommendations=recommendations
+        )
+    
+    def _calculate_complexity_score(self, text: str) -> float:
+        """Calculate weighted complexity score from indicators."""
+        score = 0.0
+        words = text.split()
+        
+        for word in words:
+            # Remove punctuation for matching
+            clean_word = re.sub(r'[^\w]', '', word)
+            if clean_word in self.HIGH_COMPLEXITY_INDICATORS:
+                score += self.HIGH_COMPLEXITY_INDICATORS[clean_word]
+        
+        return score
+    
+    def _calculate_simplicity_score(self, text: str) -> float:
+        """Calculate simplicity score from indicators."""
+        score = 0.0
+        words = text.split()
+        
+        for word in words:
+            clean_word = re.sub(r'[^\w]', '', word)
+            if clean_word in self.SIMPLE_INDICATORS:
+                score += self.SIMPLE_INDICATORS[clean_word]
+        
+        return score
+    
+    def _detect_complex_patterns(self, text: str) -> int:
+        """Count matches of complex pattern expressions."""
+        count = 0
+        for pattern in self._pattern_cache:
+            if pattern.search(text):
+                count += 1
+        return count
+    
+    def _analyze_scope(self, prompt: str) -> dict:
+        """Analyze the scope of the request."""
+        # Count sentences (periods, question marks, exclamation)
+        sentences = len(re.findall(r'[.!?]+', prompt))
+        
+        # Count comma-separated items (listing pattern)
+        comma_items = len([p for p in prompt.split(',') if len(p.strip()) > 3])
+        
+        # Estimate distinct domains or components
+        domain_indicators = [
+            'frontend', 'backend', 'database', 'api', 'ui', 'ux',
+            'auth', 'payment', 'notification', 'analytics', 'storage',
+            'security', 'logging', 'monitoring', 'cache', 'queue'
+        ]
+        detected_domains = sum(
+            1 for domain in domain_indicators 
+            if domain in prompt.lower()
+        )
+        
+        scope_penalty = (comma_items * 0.3) + (detected_domains * 1.0)
+        
+        return {
+            'sentence_count': sentences,
+            'comma_items': comma_items,
+            'detected_domains': detected_domains,
+            'scope_penalty': scope_penalty
+        }
+    
+    def _score_to_level(self, score: float) -> ComplexityLevel:
+        """Map numeric score to complexity level."""
+        if score < 2.5:
+            return ComplexityLevel.SIMPLE
+        elif score < 5.0:
+            return ComplexityLevel.MODERATE
+        elif score < 7.5:
+            return ComplexityLevel.HIGH
+        else:
+            return ComplexityLevel.EXTREME
+    
+    def _calculate_confidence(self, score: float, pattern_matches: int) -> float:
+        """Calculate confidence in the classification."""
+        base_confidence = 0.5
+        
+        # Higher pattern matches = higher confidence
+        pattern_bonus = min(pattern_matches * 0.1, 0.3)
+        
+        # Scores near boundaries = lower confidence
+        boundary_distance = min(
+            abs(score - 2.5),
+            abs(score - 5.0),
+            abs(score - 7.5),
+            abs(score - 10)
+        )
+        boundary_penalty = max(0, (2.5 - boundary_distance) * 0.1)
+        
+        confidence = base_confidence + pattern_bonus - boundary_penalty
+        return max(0.3, min(0.95, confidence))
+    
+    def _extract_complexity_factors(self, text: str) -> list[str]:
+        """Extract specific factors contributing to complexity."""
+        factors = []
+        
+        factor_keywords = {
+            'Multi-component architecture': ['system', 'architecture', 'framework'],
+            'Data integration required': ['database', 'api', 'integrate', 'connect'],
+            'Authentication/Authorization': ['auth', 'login', 'permission', 'role'],
+            'Real-time processing': ['real-time', 'stream', 'websocket', 'async'],
+            'Complex state management': ['state', 'cache', 'session', 'context'],
+            'Error handling needed': ['error', 'exception', 'fallback', 'retry'],
+            'Security considerations': ['security', 'encrypt', 'sanitize', 'validate'],
+            'Performance optimization': ['optimize', 'performance', 'scalable', 'efficient'],
+        }
+        
+        for factor, keywords in factor_keywords.items():
+            if any(kw in text for kw in keywords):
+                factors.append(factor)
+        
+        return factors
+    
+    def _generate_recommendations(
+        self, 
+        level: ComplexityLevel, 
+        factors: list[str]
+    ) -> list[str]:
+        """Generate recommendations based on complexity level."""
+        recommendations = []
+        
+        if level == ComplexityLevel.SIMPLE:
+            recommendations = [
+                "Task can be completed in a single pass",
+                "Direct implementation approach recommended",
+                "Minimal testing required"
+            ]
+        elif level == ComplexityLevel.MODERATE:
+            recommendations = [
+                "Consider breaking into 2-3 logical phases",
+                "Implement incrementally with testing between phases",
+                "Document intermediate states"
+            ]
+        elif level == ComplexityLevel.HIGH:
+            recommendations = [
+                "Decomposition into multiple agents recommended",
+                "Establish clear dependency chain",
+                "Implement robust error handling",
+                "Consider parallel task execution where possible"
+            ]
+        else:  # EXTREME
+            recommendations = [
+                "MANDATORY: Full task decomposition required",
+                "Define explicit dependency graph",
+                "Implement checkpoints/milestones",
+                "Consider hierarchical agent structure",
+                "Plan for integration testing between phases"
+            ]
+        
+        return recommendations
+
+
+# ============================================================================
+# TASK DECOMPOSITION AGENT
+# ============================================================================
+
+class TaskDecompositionAgent:
+    """
+    Agent that breaks complex projects into bite-sized tasks.
+    
+    Uses multiple decomposition strategies:
+    - Linear decomposition (sequential phases)
+    - Parallel decomposition (independent components)
+    - Hierarchical decomposition (nested subtasks)
+    - Conditional decomposition (branching paths)
+    """
+    
+    def __init__(self, llm_provider: Optional[Callable] = None):
+        """
+        Initialize decomposer with optional LLM for advanced reasoning.
+        
+        Args:
+            llm_provider: Optional LLM function for semantic decomposition
+        """
+        self.llm_provider = llm_provider
+        self._task_counter = 0
+    
+    def decompose(
+        self, 
+        prompt: str, 
+        max_task_size: str = "bite-sized"
+    ) -> list[Task]:
+        """
+        Decompose a complex prompt into manageable tasks.
+        
+        Args:
+            prompt: The original complex request
+            max_task_size: Target task granularity
+            
+        Returns:
+            List of Task objects in execution order
+        """
+        self._task_counter = 0
+        
+        # First, identify the major phases
+        phases = self._identify_phases(prompt)
+        
+        tasks = []
+        for phase in phases:
+            phase_tasks = self._decompose_phase(phase, tasks)
+            tasks.extend(phase_tasks)
+        
+        # Add dependency links
+        tasks = self._link_dependencies(tasks)
+        
+        # Validate and optimize
+        tasks = self._optimize_task_graph(tasks)
+        
+        return tasks
+    
+    def _identify_phases(self, prompt: str) -> list[dict]:
+        """Identify major phases or components of the work."""
+        phases = []
+        
+        # Detection patterns for different work types
+        work_patterns = {
+            'setup': r'(setup|install|initialize|configure|prepare)',
+            'core': r'(implement|build|create|develop|design)',
+            'integrate': r'(integrate|connect|hook|wire|link)',
+            'secure': r'(secure|authenticate|authorize|encrypt|protect)',
+            'optimize': r'(optimize|improve|enhance|refine|tune)',
+            'test': r'(test|verify|validate|check|ensure)',
+            'deploy': r'(deploy|release|publish|launch|ship)',
+            'document': r'(document|document|describe|explain)',
+        }
+        
+        prompt_lower = prompt.lower()
+        
+        # Check for explicit sequential markers
+        sequential_markers = [
+            'first', 'then', 'next', 'after', 'before', 'finally',
+            'step 1', 'step 2', 'phase 1', 'phase 2'
+        ]
+        
+        has_explicit_sequence = any(
+            marker in prompt_lower for marker in sequential_markers
+        )
+        
+        if has_explicit_sequence:
+            # Use explicit ordering
+            phases = self._extract_explicit_phases(prompt)
+        else:
+            # Infer phases from content
+            phases = self._infer_phases(prompt, work_patterns)
+        
+        return phases if phases else [{'type': 'main', 'description': prompt}]
+    
+    def _extract_explicit_phases(self, prompt: str) -> list[dict]:
+        """Extract phases from explicitly ordered text."""
+        phases = []
+        
+        # Split by common transition words
+        segments = re.split(
+            r'\s+(?:first|then|next|after that|finally|step \d+|phase \d+)\s+:?\s*',
+            prompt,
+            flags=re.IGNORECASE
+        )
+        
+        for i, segment in enumerate(segments):
+            if segment.strip() and len(segment.strip()) > 10:
+                phases.append({
+                    'type': f'phase_{i}',
+                    'description': segment.strip(),
+                    'order': i
+                })
+        
+        return phases
+    
+    def _infer_phases(self, prompt: str, patterns: dict) -> list[dict]:
+        """Infer phases from content analysis."""
+        phases = []
+        prompt_lower = prompt.lower()
+        
+        for phase_type, pattern in patterns.items():
+            if re.search(pattern, prompt_lower):
+                # Find the relevant portion
+                match = re.search(pattern, prompt_lower)
+                if match:
+                    # Extract context around the match
+                    start = max(0, match.start() - 50)
+                    end = min(len(prompt), match.end() + 100)
+                    context = prompt[start:end]
+                    
+                    phases.append({
+                        'type': phase_type,
+                        'description': context.strip(),
+                        'order': len(phases)
+                    })
+        
+        return phases
+    
+    def _decompose_phase(
+        self, 
+        phase: dict, 
+        existing_tasks: list[Task]
+    ) -> list[Task]:
+        """Decompose a single phase into concrete tasks."""
+        tasks = []
+        phase_type = phase['type']
+        description = phase['description']
+        
+        # Strategy based on phase type
+        if phase_type in ['setup', 'configure']:
+            tasks.extend(self._decompose_setup(description))
+        elif phase_type in ['core', 'implement', 'build']:
+            tasks.extend(self._decompose_implementation(description))
+        elif phase_type in ['integrate', 'connect']:
+            tasks.extend(self._decompose_integration(description))
+        elif phase_type in ['test', 'verify']:
+            tasks.extend(self._decompose_testing(description))
+        elif phase_type in ['deploy', 'release']:
+            tasks.extend(self._decompose_deployment(description))
+        else:
+            # Generic decomposition
+            tasks.extend(self._decompose_generic(description))
+        
+        return tasks
+    
+    def _decompose_setup(self, description: str) ->
+
+Finding that your agents are not keeping your repository in a good state? At the end of every session, spawn agents that analyze the blast radius of your changes and ensure that everything your change touches is contradiction-free and clean — however you define clean.
+发现你的 agents 没有保持你的 repository 处于良好状态？在每个 session 结束时，生成 agents 来分析你的更改的 blast radius，并确保你的更改涉及的所有内容都是 contradiction-free 且 clean——无论你如何定义 clean。
+
+Lastly, and most importantly — collect detailed telemetry on everything your agent orchestration layer takes in and produces (prompts, traces, outcomes) and come up with rubrics to judge the quality of your harness. Iteration is king, and this will allow you to inch toward better and better harnesses.
+最后，也是最重要的一点——对你的 agent orchestration layer 接收和生成的所有内容（prompts、traces、outcomes）收集详细的 telemetry，并制定 rubrics 来评判你的 harness 的质量。迭代为王，这将使你能够逐步打造越来越好的 harnesses。
+
+As a side-note: We've built an extremely opinionated harness that solves all of these problems in an opinionated fashion. We're really proud of it and it has become our daily driver in coding. We've also evolved it over many years of iteration and are going to open-source it once it's "public-use" ready.
+顺便说一句：我们构建了一个极其 opinionated 的 harness，以一种 opinionated 的方式解决了所有这些问题。我们对此非常自豪，它已经成为我们日常编码的 daily driver。我们也在多年的迭代中不断演进它，并计划在它达到"public-use"就绪状态后将其 open-source。
+
+For the vast majority of people, starting with a vanilla setup using native features will be good enough. But for those who need a lot more firepower from their agents, this article is designed to put into words all the problems you will likely face when using agents in long-running autonomous engineering projects.
+对于绝大多数人来说，从使用原生功能的 vanilla setup 入手就足够了。但对于那些需要更多 firepower 的代理，在长期运行的自主工程项目中使用代理时，这篇文章旨在将你可能会遇到的所有问题逐一说明。

@@ -1,0 +1,532 @@
+---
+title: ""
+source: ""
+saved_at: "2026-03-30"
+tags: []
+---
+
+# 
+
+paths:
+  - "src/api/**/*.ts"
+  - "src/handlers/**/*.ts"
+
+```
+
+𝗔𝗣𝗜 𝗗𝗲𝘀𝗶𝗴𝗻 𝗥𝘂𝗹𝗲𝘀
+
+*   All handlers return { data, error } shape
+
+*   Use zod for request body validation
+
+*   Never expose internal error details to clients
+
+claude won't even load this when it's editing a React component. it only kicks in when working inside src/api/ or src/handlers/. clean, focused, efficient.
+
+[![Image 4: Image](./img_1b7bd789.jpg)](https://x.com/Axel_bitblaze69/article/2037978621684621428/media/2037959703632986112)
+
+𝘁𝗵𝗲 𝗳𝗲𝗮𝘁𝘂𝗿𝗲𝘀 𝘁𝗵𝗮𝘁 𝗰𝗵𝗮𝗻𝗴𝗲𝗱 𝗵𝗼𝘄 𝗶 𝘄𝗼𝗿𝗸
+
+𝗺𝘂𝗹𝘁𝗶-𝗳𝗶𝗹𝗲 𝗲𝗱𝗶𝘁𝗶𝗻𝗴
+
+this is where claude code leaves everything else in the dust. this is the feature that made me stop using anything else for serious work.
+
+`claude "refactor the authentication system to use JWT tokens instead of sessions"`
+
+it will:
+
+*   find every file touching auth
+
+*   update the middleware
+
+*   modify the routes
+
+*   change the tests
+
+*   update the config
+
+*   fix the imports
+
+across 15+ files in one session. shows you diffs for review before applying. you approve, reject, or ask for changes on each file.
+
+i refactored an entire express app from callbacks to async/await in one session. 23 files. every one correct. try doing that with tab completion.
+
+𝗴𝗶𝘁 𝗶𝗻𝘁𝗲𝗴𝗿𝗮𝘁𝗶𝗼𝗻
+
+claude code speaks git natively and it's better at commit messages than most humans i've worked with:
+
+```
+
+claude "commit my changes with a descriptive message"
+claude "create a PR for this feature"
+claude "help me resolve these merge conflicts"
+claude "show me what changed in the last 5 commits and explain the impact"
+
+```
+
+it writes proper commit messages not "fixed stuff" but actual descriptions of what changed and why. it creates PRs with summaries and test plans. it handles merge conflicts by actually understanding the code on both sides, not just picking a side and hoping.
+
+𝘁𝗵𝗲 𝗮𝗴𝗲𝗻𝘁𝗶𝗰 𝗹𝗼𝗼𝗽 𝘄𝗿𝗶𝘁𝗲, 𝘁𝗲𝘀𝘁, 𝗳𝗶𝘅, 𝗿𝗲𝗽𝗲𝗮𝘁
+
+claude doesn't just write code it runs it:
+
+`writes a function → runs the tests → sees a failure → reads the error → fixes the bug → runs tests again → all green`
+
+this loop is the whole point. it's not "here's some code, good luck." it's "i wrote it, tested it, fixed the edge case you didn't think of, and it passes." i've watched it catch bugs in its own code that i wouldn't have spotted for hours.
+
+𝘀𝘂𝗯𝗮𝗴𝗲𝗻𝘁𝘀 𝘁𝗵𝗲 𝗴𝗮𝗺𝗲 𝗰𝗵𝗮𝗻𝗴𝗲𝗿 𝗻𝗼𝗯𝗼𝗱𝘆 𝘁𝗮𝗹𝗸𝘀 𝗮𝗯𝗼𝘂𝘁
+
+this one took me 3 weeks to start using properly and i regret every day i wasted not using them.
+
+claude can spawn specialized sub-agents to handle specific tasks in isolation:
+
+*   𝗲𝘅𝗽𝗹𝗼𝗿𝗲 𝗮𝗴𝗲𝗻𝘁 read-only research, fast, uses haiku. perfect for "go understand how this module works."
+
+*   𝗽𝗹𝗮𝗻 𝗮𝗴𝗲𝗻𝘁 analyzes before implementing. the "think before you code" enforcer.
+
+*   𝗴𝗲𝗻𝗲𝗿𝗮𝗹 𝗮𝗴𝗲𝗻𝘁 complex multi-step tasks in a clean context.
+
+why this matters: when you ask claude to run your full test suite, that output hundreds of lines of pass/fail.. floods your context window. your main conversation gets polluted with noise. subagents handle it in isolation. they do the messy work, compress the findings, and send back a clean summary.
+
+[![Image 5: Image](./img_1ab05499.jpg)](https://x.com/Axel_bitblaze69/article/2037978621684621428/media/2037960517990637568)
+
+you can also create custom agents for your specific workflows:
+
+```
+
+# .claude/agents/security-reviewer.md
+
+name: security-reviewer
+description: 安全漏洞专家代码审查员。在审查 PR 或部署前主动使用。
+model: sonnet
+tools: Read, Grep, Glob
+
+```
+
+now claude automatically delegates security reviews to your custom agent when relevant. or you can call it explicitly: type /security-reviewer and it spins up.
+
+the tools field is intentional.. a security auditor only needs Read, Grep, and Glob. it has no business writing files. the model field lets you use haiku for cheap read-only tasks and save opus for the ones that actually need deep reasoning.
+
+personal agents go in ~/.claude/agents/ and are available across all your projects.
+
+![Image 6](./img_1c55a550.jpg)
+
+𝗠𝗖𝗣 𝗺𝗼𝗱𝗲𝗹 𝗰𝗼𝗻𝘁𝗲𝘅𝘁 𝗽𝗿𝗼𝘁𝗼𝗰𝗼𝗹 (𝘁𝗵𝗲 𝘀𝗲𝗰𝗿𝗲𝘁 𝘄𝗲𝗮𝗽𝗼𝗻)
+
+this is where claude code goes from "good coding assistant" to "orchestration layer for my entire workflow."
+
+𝗠𝗖𝗣 𝗹𝗲𝘁𝘀 𝗰𝗹𝗮𝘂𝗱𝗲 𝗰𝗼𝗻𝗻𝗲𝗰𝘁 𝘁𝗼 𝗲𝘅𝘁𝗲𝗿𝗻𝗮𝗹 𝘁𝗼𝗼𝗹𝘀 𝗮𝗻𝗱 𝘀𝗲𝗿𝘃𝗶𝗰𝗲𝘀:
+
+*   𝗴𝗶𝘁𝗵𝘂𝗯: search repos, read issues, manage PRs, review code
+
+*   𝘀𝗹𝗮𝗰𝗸: read channels, post messages, respond to threads
+
+*   𝗽𝗼𝘀𝘁𝗴𝗿𝗲𝘀/𝗺𝘆𝘀𝗾𝗹: query your database directly
+
+*   𝗷𝗶𝗿𝗮: update tickets, change statuses
+
+*   𝗳𝗶𝗴𝗺𝗮: read designs (yes, really)
+
+*   𝗽𝘂𝗽𝗽𝗲𝘁𝗲𝗲𝗿/𝗽𝗹𝗮𝘆𝘄𝗿𝗶𝗴𝗵𝘁: browser automation
+
+*   𝘀𝗲𝗻𝘁𝗿𝘆: error monitoring
+
+*   𝗻𝗼𝘁𝗶𝗼𝗻: read and write docs
+
+𝗰𝗼𝗻𝗳𝗶𝗴𝘂𝗿𝗲 𝗶𝘁 𝗶𝗻 .𝗺𝗰𝗽.𝗷𝘀𝗼𝗻 𝗮𝘁 𝘆𝗼𝘂𝗿 𝗽𝗿𝗼𝗷𝗲𝗰𝘁 𝗿𝗼𝗼𝘁:
+
+```
+
+```json
+{
+  "mcpServers": {
+    "github": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "your_token"
+      }
+    }
+  }
+}
+```
+
+```
+
+𝗻𝗼𝘄 𝘆𝗼𝘂 𝗰𝗮𝗻 𝗱𝗼 𝘁𝗵𝗶𝗻𝗴𝘀 𝗹𝗶𝗸𝗲:
+
+```
+
+claude "查找我们github仓库中所有标记为'critical'的未关闭bug并总结它们"
+claude "查询数据库获取本周注册的用户数量并将结果发布到slack的#metrics频道"
+claude "检查sentry本周前5个错误并为每个错误创建github issue"
+
+```
+
+one tool, connected to everything. i have claude pulling github issues, reading my database, and posting summaries to slack in one conversation. no switching tabs. no context switching. no copy-pasting between tools.
+
+[![Image 7: Image](./img_2d504f97.jpg)](https://x.com/Axel_bitblaze69/article/2037978621684621428/media/2037960839433748480)
+
+𝗵𝗼𝗼𝗸𝘀: 𝗱𝗲𝘁𝗲𝗿𝗺𝗶𝗻𝗶𝘀𝘁𝗶𝗰 𝗮𝘂𝘁𝗼𝗺𝗮𝘁𝗶𝗼𝗻
+
+here's the thing about CLAUDE.md instructions, they're suggestions. claude follows them most of the time, not all of the time. you can't rely on a language model to always run your linter. always format your code. always check for dangerous commands.
+
+hooks make these behaviors 𝗱𝗲𝘁𝗲𝗿𝗺𝗶𝗻𝗶𝘀𝘁𝗶𝗰. they're event handlers that fire automatically at specific points in claude's workflow. your shell script runs every time, no exceptions.
+
+𝘁𝗵𝗲 𝗲𝘃𝗲𝗻𝘁𝘀 𝘆𝗼𝘂'𝗹𝗹 𝘂𝘀𝗲 𝗺𝗼𝘀𝘁:
+
+*   𝗣𝗿𝗲𝗧𝗼𝗼𝗹𝗨𝘀𝗲: fires before any tool runs. your security gate. block dangerous commands here.
+
+*   𝗣𝗼𝘀𝘁𝗧𝗼𝗼𝗹𝗨𝘀𝗲: fires after a tool succeeds. auto-format, auto-lint, auto-validate.
+
+*   𝗦𝘁𝗼𝗽: fires when claude finishes a task. quality gate. "tests must pass before you're done."
+
+*   𝗨𝘀𝗲𝗿𝗣𝗿𝗼𝗺𝗽𝘁𝗦𝘂𝗯𝗺𝗶𝘁: fires when you press enter. prompt validation.
+
+*   𝗡𝗼𝘁𝗶𝗳𝗶𝗰𝗮𝘁𝗶𝗼𝗻: desktop alerts when claude needs your attention.
+
+here's a real hooks config that auto-formats every file claude touches and blocks dangerous bash commands:
+
+```
+
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "jq -r '.tool_input.file_path' | xargs npx prettier --write 2>/dev/null"
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/bash-firewall.sh"
+          }
+        ]
+      }
+    ]
+  }
+}
+
+```
+
+the bash firewall script reads the command from stdin, checks it against dangerous patterns (rm -rf, git push --force, DROP TABLE), and exits with code 2 to block it. exit 0 = let it through. exit 1 = warn but continue. exit 2 = block completely.
+
+a Stop hook that runs npm test and exits with code 2 on failure will prevent claude from declaring "done" until the suite is green. no more "i'm done!" when 3 tests are failing.
+
+hooks don't hot-reload mid-session, restart if you change them. and they run with your full user permissions, so quote your shell variables and validate your JSON input.
+
+[![Image 8: Image](./img_0956f87e.jpg)](https://x.com/Axel_bitblaze69/article/2037978621684621428/media/2037973574066282496)
+
+𝘀𝗸𝗶𝗹𝗹𝘀: 𝗿𝗲𝘂𝘀𝗮𝗯𝗹𝗲 𝘄𝗼𝗿𝗸𝗳𝗹𝗼𝘄𝘀 𝗼𝗻 𝗱𝗲𝗺𝗮𝗻𝗱
+
+skills are the feature that made me realize how deep this rabbit hole goes.
+
+a skill is a workflow that claude can invoke on its own based on context, or that you can trigger with a slash command. skills watch the conversation and act when the moment is right.
+
+𝗲𝗮𝗰𝗵 𝘀𝗸𝗶𝗹𝗹 𝗹𝗶𝘃𝗲𝘀 𝗶𝗻 𝗶𝘁𝘀 𝗼𝘄𝗻 𝘀𝘂𝗯𝗱𝗶𝗿𝗲𝗰𝘁𝗼𝗿𝘆 𝘄𝗶𝘁𝗵 𝗮 𝗦𝗞𝗜𝗟𝗟.𝗺𝗱 𝗳𝗶𝗹𝗲:
+
+```
+
+.claude/skills/
+├── security-review/
+│   ├── SKILL.md
+│   └── DETAILED_GUIDE.md
+└── deploy/
+    ├── SKILL.md
+    └── templates/
+        └── release-notes.md
+
+```
+
+𝘁𝗵𝗲 𝗦𝗞𝗜𝗟𝗟.𝗺𝗱 𝘂𝘀𝗲𝘀 𝗬𝗔𝗠𝗟 𝗳𝗿𝗼𝗻𝘁𝗺𝗮𝘁𝘁𝗲𝗿 𝘁𝗼 𝗱𝗲𝘀𝗰𝗿𝗶𝗯𝗲 𝘄𝗵𝗲𝗻 𝘁𝗼 𝗮𝗰𝘁𝗶𝘃𝗮𝘁𝗲:
+
+Analyze the codebase for security vulnerabilities:
+
+1.   SQL injection and XSS risks
+
+2.   Exposed credentials or secrets
+
+3.   Insecure configurations
+
+4.   Authentication and authorization gaps
+
+Report findings with severity ratings and specific remediation steps. Reference
+
+.md for our security standards.
+
+when you say "review this PR for security issues," claude reads the description, recognizes it matches, and invokes the skill automatically. or you call it directly: /security-review.
+
+the key difference from commands: 𝘀𝗸𝗶𝗹𝗹𝘀 𝗰𝗮𝗻 𝗯𝘂𝗻𝗱𝗹𝗲 𝘀𝘂𝗽𝗽𝗼𝗿𝘁𝗶𝗻𝗴 𝗳𝗶𝗹𝗲𝘀 𝗮𝗹𝗼𝗻𝗴𝘀𝗶𝗱𝗲 𝘁𝗵𝗲𝗺. the
+
+.md reference pulls in a detailed document that lives right next to SKILL.md. commands are single files. skills are packages.
+
+the /last30days skill that went viral on X is a perfect example, someone built a skill that scans Reddit and X from the last 30 days on any topic, synthesizes what the community has figured out, and writes you ready-to-use prompts. type /last30days prompting techniques for legal questions and it returns frameworks real lawyers and power users are actually using. that's the kind of thing you can build with skills.
+
+personal skills go in ~/.claude/skills/ and are available across all your projects.
+
+𝗽𝗹𝗮𝗻 𝗺𝗼𝗱𝗲: 𝘁𝗵𝗶𝗻𝗸 𝗯𝗲𝗳𝗼𝗿𝗲 𝘆𝗼𝘂 𝗯𝘂𝗶𝗹𝗱
+
+this one saved me from myself more times than i can count.
+
+𝗯𝗲𝗳𝗼𝗿𝗲 𝘆𝗼𝘂 𝗹𝗲𝘁 𝗰𝗹𝗮𝘂𝗱𝗲 𝗹𝗼𝗼𝘀𝗲 𝗼𝗻 𝗮 𝗯𝗶𝗴 𝗿𝗲𝗳𝗮𝗰𝘁𝗼𝗿:
+
+```
+
+按下 `Shift+Tab` 两次进入计划模式
+claude "analyze the database layer and propose a migration to TypeORM"
+
+```
+
+claude explores your codebase, reads the relevant files, analyzes the architecture then presents a plan. no changes made. nothing modified. just analysis and a proposed approach.
+
+you review it. adjust it. ask questions. poke holes. then when you're confident, approve and let it implement.
+
+this prevents the "claude rewrote my entire project and i didn't ask for that" moment. trust me, that moment is not fun. plan first, build second. always.
+
+𝗺𝗲𝗺𝗼𝗿𝘆 𝘀𝘆𝘀𝘁𝗲𝗺: 𝗶𝘁 𝗴𝗲𝘁𝘀 𝘀𝗺𝗮𝗿𝘁𝗲𝗿 𝘁𝗵𝗲 𝗺𝗼𝗿𝗲 𝘆𝗼𝘂 𝘂𝘀𝗲 𝗶𝘁
+
+claude remembers things across sessions. automatically.
+
+correct it once "don't use class components in this project, we use hooks" and it saves that preference. next session, it already knows. you don't repeat yourself.
+
+manage it with /memory. stored at ~/.claude/projects/<project>/memory/.
+
+the combination of CLAUDE.md (team knowledge) + auto memory (personal learning) means 𝗰𝗹𝗮𝘂𝗱𝗲 𝗰𝗼𝗺𝗽𝗼𝘂𝗻𝗱𝘀. it gets better the more you use it. week 1 claude and week 8 claude on the same project are different animals.
+
+𝗰𝗼𝗺𝗽𝘂𝘁𝗲𝗿 𝘂𝘀𝗲
+
+this one dropped in march 2026 and it's wild.
+
+claude can now control your computer directly:
+
+*   open applications
+
+*   navigate browsers
+
+*   fill out spreadsheets
+
+*   interact with any GUI
+
+*   take screenshots and react to what it sees
+
+no setup required. works from your phone via remote control.
+
+i haven't gone deep on this one yet still experimenting. but the implications are insane. imagine telling claude to "open figma, screenshot the latest design, then implement it in react." we're getting there.
+
+𝗽𝗼𝘄𝗲𝗿 𝘂𝘀𝗲𝗿 𝘄𝗼𝗿𝗸𝗳𝗹𝗼𝘄𝘀
+
+these are the patterns that took me from "using claude code" to "being dangerous with claude code." none of this is in the docs.
+
+𝘁𝗵𝗲 "𝗶𝗻𝘁𝗲𝗿𝘃𝗶𝗲𝘄 𝗺𝗲" 𝘁𝗲𝗰𝗵𝗻𝗶𝗾𝘂𝗲
+
+starting a complex project? don't write a massive prompt. don't try to think of everything upfront. just say:
+
+`claude "interview me in detail about what i want to build"`
+
+let claude ask YOU the questions. it'll ask about tech stack, requirements, edge cases, existing code, deployment targets, user types things you'd forget to mention in a prompt. 10 minutes of back-and-forth gives claude better context than a 500-word prompt ever could.
+
+i use this for every new feature now. every single one.
+
+𝘁𝗵𝗲 𝗿𝗲𝘀𝗲𝗮𝗿𝗰𝗵 → 𝗶𝗺𝗽𝗹𝗲𝗺𝗲𝗻𝘁 𝘀𝗽𝗹𝗶𝘁
+
+never let claude implement something it doesn't understand first.
+
+```
+
+阶段 1：`Shift+Tab` 两次 → 计划模式 → `"explore the codebase and understand how payments work"`
+审查分析结果。确保它真正理解了。
+阶段 2：`"implement subscription billing based on your analysis"`
+
+```
+
+the quality difference between "just build it" and "understand it first, then build it" is night and day. especially on legacy codebases where nothing is where you'd expect it.
+
+𝗽𝗮𝗿𝗮𝗹𝗹𝗲𝗹 𝘄𝗼𝗿𝗸 𝘄𝗶𝘁𝗵 𝘄𝗼𝗿𝗸𝘁𝗿𝗲𝗲𝘀
+
+```
+
+终端 1: `claude --worktree auth-feature`
+终端 2: `claude --worktree billing-feature`
+
+```
+
+each gets an isolated git branch. two features developed simultaneously by two separate claude sessions. merge when ready.
+
+i run 3 worktrees sometimes. auth feature in terminal 1, API endpoint in terminal 2, test suite in terminal 3. all running in parallel. all isolated. it's obscene productivity.
+
+𝘁𝗵𝗲 𝗰𝗼𝗻𝘁𝗲𝘅𝘁 𝗺𝗮𝗻𝗮𝗴𝗲𝗺𝗲𝗻𝘁 𝗴𝗮𝗺𝗲
+
+𝘁𝗵𝗶𝘀 𝗶𝘀 𝘁𝗵𝗲 #𝟭 𝘀𝗸𝗶𝗹𝗹 𝘁𝗵𝗮𝘁 𝘀𝗲𝗽𝗮𝗿𝗮𝘁𝗲𝘀 𝗴𝗼𝗼𝗱 𝗰𝗹𝗮𝘂𝗱𝗲 𝗰𝗼𝗱𝗲 𝘂𝘀𝗲𝗿𝘀 𝗳𝗿𝗼𝗺 𝗴𝗿𝗲𝗮𝘁 𝗼𝗻𝗲𝘀.
+
+the context window is ~200K tokens. sounds like a lot. it's not when you're deep in a session. as it fills up:
+
+*   older tool outputs get cleared first
+
+*   conversation gets auto-summarized
+
+*   early instructions may be lost
+
+𝗺𝗮𝗻𝗮𝗴𝗲 𝗶𝘁 𝗮𝗰𝘁𝗶𝘃𝗲𝗹𝘆:
+
+```
+
+`/compact` — 手动总结对话以节省空间
+`/clear` — 不相关任务之间的全新开始
+`/cost` — 查看什么消耗了 tokens 及其位置
+对冗长操作使用 subagents（测试输出、日志分析、大文件读取）
+将重复指令放在 CLAUDE.md 中，而非对话中
+
+```
+
+𝘁𝗵𝗲 𝗴𝗼𝗹𝗱𝗲𝗻 𝗿𝘂𝗹𝗲: after two failed attempts at something, stop. don't keep going. /clear and write a better initial prompt from scratch. a fresh context with a clear prompt almost always works better than a polluted context full of failed approaches. i learned this at the cost of about 6 hours of wasted time.
+
+𝘁𝗵𝗲 ! 𝗽𝗿𝗲𝗳𝗶𝘅 𝘁𝗿𝗶𝗰𝗸
+
+𝘁𝘆𝗽𝗲 ! 𝗯𝗲𝗳𝗼𝗿𝗲 𝗮𝗻𝘆 𝗰𝗼𝗺𝗺𝗮𝗻𝗱 𝘁𝗼 𝗿𝘂𝗻 𝗶𝘁 𝗱𝗶𝗿𝗲𝗰𝘁𝗹𝘆 𝗶𝗻 𝘆𝗼𝘂𝗿 𝘀𝗵𝗲𝗹𝗹 𝘄𝗶𝘁𝗵𝗼𝘂𝘁 𝗰𝗹𝗮𝘂𝗱𝗲:
+
+```
+
+# Git 和 NPM 命令执行结果
+
+!git status
+!npm test
+!cat src/config.ts
+
+```
+
+the output gets added to claude's context automatically. great for quickly showing claude what's happening without asking it to run the command and waiting for permission prompts.
+
+𝗲𝘅𝘁𝗲𝗿𝗻𝗮𝗹 𝗲𝗱𝗶𝘁𝗼𝗿 𝗳𝗼𝗿 𝗹𝗼𝗻𝗴 𝗽𝗿𝗼𝗺𝗽𝘁𝘀
+
+Ctrl+G opens your system editor (vim, VS Code, whatever you have set). write complex multi-line prompts with syntax highlighting. save and close it sends to claude.
+
+way better than typing a paragraph into a single-line terminal input. i use this for every prompt longer than 2 sentences now.
+
+𝘁𝗵𝗲 𝗱𝗼𝘂𝗯𝗹𝗲-𝗲𝘀𝗰𝗮𝗽𝗲 𝗿𝗲𝘄𝗶𝗻𝗱
+
+this one's clutch and nobody mentions it.
+
+claude went the wrong direction? double-tap Escape, and you get a rewind menu. you can undo the last action, go back further, or "summarize from here" which compresses the failed attempt while keeping the useful context. way better than /clear because you don't lose everything, just the mistake.
+
+[![Image 9: Image](./img_14bbc638.jpg)](https://x.com/Axel_bitblaze69/article/2037978621684621428/media/2037947336899665920)
+
+print this table. tape it to your monitor. seriously.
+
+𝗽𝗲𝗿𝗺𝗶𝘀𝘀𝗶𝗼𝗻 𝗺𝗼𝗱𝗲𝘀
+
+claude code has different levels of autonomy. knowing when to use each is important:
+
+[![Image 10: Image](./img_046a769d.jpg)](https://x.com/Axel_bitblaze69/article/2037978621684621428/media/2037947627908833280)
+
+start with default. move to acceptEdits once you trust it (took me about a week). use plan for exploration before big refactors.
+
+𝘆𝗼𝘂 𝗰𝗮𝗻 𝗮𝗹𝘀𝗼 𝘄𝗵𝗶𝘁𝗲𝗹𝗶𝘀𝘁 𝗮𝗻𝗱 𝗯𝗹𝗮𝗰𝗸𝗹𝗶𝘀𝘁 𝘀𝗽𝗲𝗰𝗶𝗳𝗶𝗰 𝗰𝗼𝗺𝗺𝗮𝗻𝗱𝘀 𝗶𝗻 .𝗰𝗹𝗮𝘂𝗱𝗲/𝘀𝗲𝘁𝘁𝗶𝗻𝗴𝘀.𝗷𝘀𝗼𝗻:
+
+```
+
+# 权限配置
+
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run *)",
+      "Bash(git status)",
+      "Bash(git diff *)",
+      "Read",
+      "Write",
+      "Edit"
+    ],
+    "deny": [
+      "Bash(rm -rf *)",
+      "Bash(curl *)",
+      "Read(./.env)",
+      "Read(./.env.*)"
+    ]
+  }
+}
+
+白名单直接运行，无需询问。黑名单完全阻止。不在任一列表中的内容，Claude 会先询问。这种中间地带是刻意设计的。安全网，无需对每个命令进行微观管理。
+
+𝗰𝗹𝗮𝘂𝗱𝗲 𝗰𝗼𝗱𝗲 𝘃𝘀 𝗰𝘂𝗿𝘀𝗼𝗿 𝘃𝘀 𝗴𝗶𝘁𝗵𝘂𝗯 𝗰𝗼𝗽𝗶𝗹𝗼𝘁
+
+诚实的比较。没有粉丝狂热。只是我的亲身经历：
+
+𝗰𝗹𝗮𝘂𝗱𝗲 𝗰𝗼𝗱𝗲：终端原生，真正具有自主性。读取整个代码库。自主多文件更改。最适合：复杂的重构、架构决策、代码库范围的更改、调试棘手问题、涉及超过 3 个文件的任何内容。感觉就像一个冷静的高级工程师，从不疲倦，也从不评判你的代码。
+
+𝗰𝘂𝗿𝘀𝗼𝗿：IDE 原生（VS Code 分支）。最适合日常标签补全和内联建议。编辑器中反馈循环更紧密。自主性较低但小型更改更快。最适合：快速编辑、内联补全、写代码时保持心流状态。
+
+𝗴𝗶𝘁𝗵𝘂𝗯 𝗰𝗼𝗽𝗶𝗹𝗼𝘁：插件方式。最佳免费层级（$10/月）。最安全的企业选择。自主能力在改进，但仍然落后于 Claude Code 和 Cursor。
+
+这里大多数人没有意识到：你不需要选择其中一个。
+
+组合策略是真实存在的，而且大多数高级用户实际上都在这样做。Cursor 用于日常标签补全和内联编辑。Claude Code 用于重型重构、新功能、调试、架构决策。
+
+数据支持这一点：经验丰富的开发者平均使用 𝟮.𝟯 个 AI 编码工具。这不是用这一个取代另一个的问题。而是用正确的工具做正确的工作。
+
+Claude Code 在不到一年内从零跃升为 #𝟭 最受喜爱的 AI 编码工具。2026 年初的调查中，46% 的开发者将其评为最爱。95% 的开发者现在每周使用 AI 工具。75% 将 AI 用于超过一半的编码工作。
+
+游戏规则已经改变。永久性地。问题不在于是否使用 AI 编码工具。而是你能多快地掌握它们。
+
+𝗰𝗹𝗮𝘂𝗱𝗲 𝗰𝗼𝗱𝗲 生态系统
+
+社区在 Claude Code 之上构建了海量的工具。以下是值得了解的：
+
+𝘀𝘂𝗽𝗲𝗿𝗽𝗼𝘄𝗲𝗿𝘀（obra/superpowers）：一个完整的 AI 编码代理开发方法论。GitHub 上 117K+ 星。它改变了你的代理编写代码的方式——强制它先头脑风暴、创建详细的实现计划、启动子代理驱动的开发，并在宣布完成前进行两阶段代码审查。如果你觉得 Claude Code 有时会产生"意面代码"，这就是解决方案。
+
+𝗚𝗦𝗗 𝗴𝗲𝘁 𝘀𝗵𝗶𝘁 𝗱𝗼𝗻𝗲（gsd-build/get-shit-done）：Claude Code 的元提示和上下文管理系统。轻量但强大。解决了上下文退化问题。
+
+𝗮𝘄𝗲𝘀𝗼𝗺𝗲-𝗰𝗹𝗮𝘂𝗱𝗲-𝗰𝗼𝗱𝗲：社区策划的最佳资源、技能、代理和 MCP 服务器集合。你发现外面有什么的起点。
+
+/𝗹𝗮𝘀𝘁𝟯𝟬𝗱𝗮𝘆𝘀 𝘀𝗸𝗶𝗹𝗹：那个走红的技能。扫描 Reddit、X、YouTube、Hacker News 和过去 30 天网络上关于你给出的任何主题的内容。将社区知识综合成可直接使用的提示。输入 /last30days cold email frameworks，它会找到 3 Ps 框架、ADA、基于意图的触发器等你自己永远不会找到的东西。然后根据实际有效的内容为你编写可直接使用的提示。开源，MIT 许可证。
+
+𝗰𝗹𝗮𝘂𝗱𝗲 𝗵𝗼𝘄-𝘁𝗼：视觉驱动、示例导向的 Claude Code 掌握指南。对于想要结构化教程的视觉学习者来说是最佳资源。
+
+𝗰𝗹𝗮𝘂𝗱𝗲 𝗺𝗲𝗺：持久记忆层。如果内置记忆系统不够满足你的工作流程。
+
+𝗨𝗜 𝗨𝗫 𝗽𝗿𝗼 𝗺𝗮𝘅：面向设计的 Claude Code 工具。当你想让 Claude 关注事物的外观，而不仅仅是它们如何工作时。
+
+𝗻𝟴𝗻-𝗠𝗖𝗣：将 Claude Code 连接到 n8n 工作流自动化。如果你已经在使用 n8n，这是一个不可或缺的集成。
+
+生态系统发展迅速。每周都有新工具。这些是我实际使用过或见过产生真实结果的。不是所有精选列表，只是现在重要的那些。
+
+常见错误（我都犯过）
+
+𝟭. 在 𝗖𝗟𝗔𝗨𝗗𝗘.𝗺𝗱 里写小说 保持 200 行以内。具体、可操作。如果 Claude 忽视你的指令，你的 CLAUDE.md 可能太长了。我曾经有一个 400 行的，基本上是一个宣言。精简到 150 行，一切改善了。
+
+𝟮. 任务之间不使用 /𝗰𝗹𝗲𝗮𝗿 关于修复 CSS bug 的对话对实现新 API 端点没有有用的上下文。剩余的上下文会损害性能。清空它。重新开始。每次都这样做。
+
+𝟯. 失败后不重置而是与之对抗 两次尝试失败后，上下文已经被错误方法污染了。Claude 开始引用自己的错误。/clear 并写一个更好的提示。新上下文几乎总是能搞定。我曾经浪费了 6 个小时才学会这一点。
+
+𝟰. 不使用子代理 在主对话中运行完整测试套件会用数百行输出淹没上下文。委托给子代理。保持主对话干净，专注于实际工作。
+
+𝟱. 什么都用 Opus Sonnet 能完美处理 90% 的任务。Opus 用于真正需要深度推理的那 10%——复杂架构、棘手调试、微妙逻辑错误。你的钱包会感谢你。我的就感谢了。
+
+𝟲. 大改动时忽略计划模式 任何涉及超过 3 个文件的内容，先计划。一定。每次花 5 分钟审查计划，当 Claude 走错方向时能为你节省 2 小时的清理工作。
+
+𝟳. 不主动管理上下文 上下文窗口是一种资源。像对待资源一样对待它。变长时用 /compact。冗长操作用子代理。指令用 CLAUDE.md 而不是每个会话重复。善于管理上下文的人比不善于的人获得明显更好的结果。
+
+底线
+
+Claude Code 不是工具。它是一个队友。
+
+一个会阅读你的整个代码库、遵循你的编码标准、运行你的测试、创建你的 PR、记住你的偏好、连接你所有工具的队友。而且你用它越多，它就变得越好。
+
+我已经用了 2 个月了。我完成了课程，拿到了证书，每天都在构建项目。我可以绝对自信地告诉你，那些学会与 Claude Code 协作（而不只是粘贴代码给它）的人，正在以一年前不可想象的速度发布产品。
+
+现在是 2026 年。你可以使用一个 AI 代理，它可以自主导航 50,000 行代码库、进行精准的多文件更改、运行测试、修复自己的 bug，并创建带文档的 pull request。你的祖先会梦想拥有这个。
+
+停止收藏关于 AI 的文章。开始用它来构建。
+
+如果这对你有帮助，分享给还在把代码复制粘贴到 ChatGPT 的人。他们比你更需要这个。
+
+找到我 →

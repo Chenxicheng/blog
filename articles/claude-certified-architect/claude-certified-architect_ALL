@@ -1,0 +1,114 @@
+# # Claude Certified Architect — Foundations / # 克劳德认证架构师 — 基础
+
+This repository contains study materials for the **Claude Certified Architect — Foundations** certification.
+此仓库包含 **Claude Certified Architect — Foundations** 认证的学习资料。
+
+![alt text](image.png)
+没有可翻译的文本内容。您只提供了一个图片引用（image.png），但没有附带实际的文本内容。请提供需要翻译的文字内容。
+
+## Certificate Example
+## 证书示例
+
+![alt text](image-1.png)
+![alt text](image-1.png)
+
+## Course Access
+## 课程访问
+
+- Certification is currently restricted to members of the Anthropic Partner Network and requires registration with a verified partner company email. Claude Partner Network: https://claude.com/partners
+- Free for the first 5,000 partner company employees. General availability will be $99.
+- To request access to the official course/exam portal, use this link: https://anthropic.skilljar.com/claude-certified-architect-foundations-access-request
+- 认证目前仅向 Anthropic Partner Network 成员开放，需要使用已验证的合作公司邮箱进行注册。Claude Partner Network: https://claude.com/partners
+
+- 前 5,000 名合作公司员工免费使用。正式发布后价格为 $99。
+
+- 如需申请访问官方课程/考试门户，请使用此链接：https://anthropic.skilljar.com/claude-certified-architect-foundations-access-request
+
+## Study Guide
+## 学习指南
+
+- **English guide**: [`guide_en.md`](./guide_en.MD)
+- **Russian guide**: [`guide_ru.md`](./guide_ru.MD)
+- **Chinese guide**: [`guide_zh.md`](./guide_zh.md)
+- **Japanese guide**: [`guide_ja.md`](./guide_ja.md)
+- **英文指南**：[`guide_en.MD`](./guide_en.MD)
+- **俄语指南**：[`guide_ru.MD`](./guide_ru.MD)
+- **中文指南**：[`guide_zh.MD`](./guide_zh.md)
+- **日语指南**：[`guide_ja.MD`](./guide_ja.md)
+
+## PDF Version
+## PDF 版本
+
+- **English guide**: [`guide_en.pdf`](./pdf/guide_en.pdf)
+- **Russian guide**: [`guide_ru.pdf`](./pdf/guide_ru.pdf)
+- **Chinese guide**: [`guide_zh.pdf`](./pdf/guide_zh.pdf)
+- **Japanese guide**: [`guide_ja.pdf`](./pdf/guide_ja.pdf)
+- **英文指南**: [`guide_en.pdf`](./pdf/guide_en.pdf)
+- **俄文指南**: [`guide_ru.pdf`](./pdf/guide_ru.pdf)
+- **中文指南**: [`guide_zh.pdf`](./pdf/guide_zh.pdf)
+- **日文指南**: [`guide_ja.pdf`](./pdf/guide_ja.pdf)
+
+## How to Use
+## 如何使用
+
+- Read the guide that matches your preferred language.
+- Work through the scenarios and questions.
+- Use the **Practical Exercises** section to rehearse key patterns (tool design, MCP integration, structured output, context management, and reliability).
+- 阅读与您首选语言相匹配的指南。
+- 完成场景和问题的演练。
+- 使用 **Practical Exercises** 部分来练习关键模式（tool design、MCP integration、structured output、context management 和 reliability）。
+
+## Free Anthropic Courses
+## 免费 Anthropic 课程
+
+13 free courses & certificates from Anthropic Academy:
+13 来自 Anthropic Academy 的免费课程和证书：
+
+1. **[Claude 101](https://anthropic.skilljar.com/claude-101)** — Learn Claude for everyday work. Core features and best practices.
+2. **[AI Fluency: Framework & Foundations](https://anthropic.skilljar.com/ai-fluency-framework-foundations)** — The foundational thinking course.
+3. **[Introduction to Agent Skills](https://anthropic.skilljar.com/introduction-to-agent-skills)** — Build, configure, and share Skills in Claude Code.
+4. **[Building with the Claude API](https://anthropic.skilljar.com/claude-with-the-anthropic-api)** — Function calling, tool use, streaming, SDKs, and production patterns.
+5. **[Claude Code in Action](https://anthropic.skilljar.com/claude-code-in-action)** — Integrate Claude Code into your dev workflow.
+6. **[Intro to Model Context Protocol](https://anthropic.skilljar.com/introduction-to-model-context-protocol)** — Build MCP servers and clients from scratch in Python.
+7. **[MCP: Advanced Topics](https://anthropic.skilljar.com/model-context-protocol-advanced-topics)** — Sampling, notifications, file system access, and transport for production MCP servers.
+8. **[AI Fluency for Students](https://anthropic.skilljar.com/ai-fluency-for-students)** — AI skills for learning, career planning, and academic success.
+9. **[AI Fluency for Educators](https://anthropic.skilljar.com/ai-fluency-for-educators)** — For faculty and instructional designers applying AI Fluency into teaching.
+10. **[Teaching AI Fluency](https://anthropic.skilljar.com/teaching-ai-fluency)** — Teach and assess AI Fluency in instructor-led settings.
+11. **[AI Fluency for Nonprofits](https://anthropic.skilljar.com/ai-fluency-for-nonprofits)** — Increase organizational impact while staying mission-true.
+12. **[Claude with Amazon Bedrock](https://anthropic.skilljar.com/claude-in-amazon-bedrock)** — The full AWS accreditation course, now open to everyone.
+13. **[Claude with Google Cloud's Vertex AI](https://anthropic.skilljar.com/claude-with-google-vertex)** — Work with Claude through Google Cloud's Vertex AI, from setup to production.
+1. **[Claude 101](https://anthropic.skilljar.com/claude-101)** — 学习将 Claude 应用于日常工作。核心功能与最佳实践。
+2. **[AI Fluency: Framework & Foundations](https://anthropic.skilljar.com/ai-fluency-framework-foundations)** — 基础思维课程。
+3. **[Introduction to Agent Skills](https://anthropic.skilljar.com/introduction-to-agent-skills)** — 在 Claude Code 中构建、配置和分享 Skills。
+4. **[Building with the Claude API](https://anthropic.skilljar.com/claude-with-the-anthropic-api)** — Function calling、tool use、streaming、SDKs 与生产环境模式。
+5. **[Claude Code in Action](https://anthropic.skilljar.com/claude-code-in-action)** — 将 Claude Code 集成到你的开发工作流中。
+6. **[Intro to Model Context Protocol](https://anthropic.skilljar.com/introduction-to-model-context-protocol)** — 使用 Python 从零构建 MCP servers 和 clients。
+7. **[MCP: Advanced Topics](https://anthropic.skilljar.com/model-context-protocol-advanced-topics)** — Sampling、notifications、file system access 与生产环境 MCP servers 的传输机制。
+8. **[AI Fluency for Students](https://anthropic.skilljar.com/ai-fluency-for-students)** — 适用于学习、职业规划和学业成功的 AI 技能。
+9. **[AI Fluency for Educators](https://anthropic.skilljar.com/ai-fluency-for-educators)** — 面向将 AI Fluency 融入教学的教师和教学设计师。
+10. **[Teaching AI Fluency](https://anthropic.skilljar.com/teaching-ai-fluency)** — 在讲师主导的环境中教授和评估 AI Fluency。
+11. **[AI Fluency for Nonprofits](https://anthropic.skilljar.com/ai-fluency-for-nonprofits)** — 在坚守使命的同时提升组织影响力。
+12. **[Claude with Amazon Bedrock](https://anthropic.skilljar.com/claude-in-amazon-bedrock)** — 完整的 AWS 认证课程，现已向所有人开放。
+13. **[Claude with Google Cloud's Vertex AI](https://anthropic.skilljar.com/claude-with-google-vertex)** — 通过 Google Cloud 的 Vertex AI 使用 Claude，从配置到生产环境。
+
+## See Also
+## 另请参阅
+
+- Claude Code: Commands Cheatsheet https://claude-guides.com
+- Top 80 Claude Skills, Agents & GitHub Repos for AI — The Complete Guide https://x.com/paullarionov/status/2038254131849134220
+- Claude Code: Commands 速查表 https://claude-guides.com
+- Top 80 Claude Skills、Agents & GitHub Repos for AI — 完整指南 https://x.com/paullarionov/status/2038254131849134220
+
+## How to Contribute
+## 如何贡献
+
+- Add new translations to your language in md files, PDF version will be generated automatically after merge of PR.
+在 md 文件中添加新语言的翻译，PR 合并后 PDF 版本将自动生成。
+
+## Follow
+关注
+
+- LinkedIn: https://www.linkedin.com/in/paullarionov
+- X: https://x.com/paullarionov
+- LinkedIn：https://www.linkedin.com/in/paullarionov
+- X：https://x.com/paullarionov
