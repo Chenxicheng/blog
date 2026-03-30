@@ -1,10 +1,11 @@
 # 文章索引
 
-共 17 篇，更新于 2026-03-30 20:20
+共 18 篇，更新于 2026-03-30 20:21
 
 
-## AI Agent (9)
+## AI Agent (10)
 
+- [Tw93 on X: "你不知道的 Agent：原理、架构与工程实践" / X](Tw93-on-X-你不知道的-Agent：原理、架构与工程实践-X/Tw93-on-X-你不知道的-Agent：原理、架构与工程实践-X.md) #X/Twitter  _2026-03-30_
 - [huangserva on X: "别再卷模型了，2026 年 Agent 的胜负手在 Harness！给你的Agent 搭"操作系统"吧" / X](huangserva-on-X-别再卷模型了，2026-年-Agent-的胜负手在-Harness！给你的Agent-搭操作系统吧-X/huangserva-on-X-别再卷模型了，2026-年-Agent-的胜负手在-Harness！给你的Agent-搭操作系统吧-X.md) #Harness #X/Twitter  _2026-03-30_
 - [sysls on X: "How To Solve Problems Of Long Running, Autonomous Agentic Engineering Workflows" / X / sysls on X: "How To Solve Problems Of Long Running, Autonomous Agentic Engineering Workflows" / X](sysls-on-X-How-To-Solve-Problems-Of-Long-Running,-Autonomous-Agentic-Engineering-Workflows-X/sysls-on-X-How-To-Solve-Problems-Of-Long-Running,-Autonomous-Agentic-Engineering-Workflows-X_ALL.md) #X/Twitter  _2026-03-30_
 - [huangserva on X: "别再卷模型了，2026 年 Agent 的胜负手在 Harness！给你的Agent 搭"操作系统"吧" / X](huangserva-on-X-别再卷模型了，2026-年-Agent-的胜负手在-Harness！给你的Agent-搭操作系统吧-X/huangserva-on-X-别再卷模型了，2026-年-Agent-的胜负手在-Harness！给你的Agent-搭操作系统吧-X.md) #Harness #X/Twitter  _2026-03-29_
@@ -74,8 +75,9 @@
 
 - [Claude Certified Architect](claude-certified-architect/claude-certified-architect_ALL.md) #Claude  _2026-03-30_
 
-## X/Twitter (14)
+## X/Twitter (15)
 
+- [Tw93 on X: "你不知道的 Agent：原理、架构与工程实践" / X](Tw93-on-X-你不知道的-Agent：原理、架构与工程实践-X/Tw93-on-X-你不知道的-Agent：原理、架构与工程实践-X.md) #AI Agent  _2026-03-30_
 - [Tw93 on X: "你不知道的 Claude Code：架构、治理与工程实践" / X](Tw93-on-X-你不知道的-Claude-Code：架构、治理与工程实践-X/Tw93-on-X-你不知道的-Claude-Code：架构、治理与工程实践-X.md) #Claude  _2026-03-30_
 - [Vox on X: "I Compared gstack, Superpowers, and Compound Engineering. They Solve Three Completely Dif](Vox-on-X-I-Compared-gstack,-Superpowers,-and-Compound-Engineering.-They-Solve-Three-Completely-Dif/Vox-on-X-I-Compared-gstack,-Superpowers,-and-Compound-Engineering.-They-Solve-Three-Completely-Dif_EN.md)  _2026-03-30_
 - [Berryxia.AI on X: "为什么程序员钟爱Codex，Vibe Coding的人却离不开Claude？一文弄懂它！" / X](Berryxia.AI-on-X-为什么程序员钟爱Codex，Vibe-Coding的人却离不开Claude？一文弄懂它！-X/Berryxia.AI-on-X-为什么程序员钟爱Codex，Vibe-Coding的人却离不开Claude？一文弄懂它！-X.md) #Codex #Claude  _2026-03-30_
